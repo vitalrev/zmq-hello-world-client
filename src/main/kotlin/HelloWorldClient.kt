@@ -8,6 +8,10 @@ fun main(args: Array<String>) {
         println("Connecting to hello world server")
         val socket: ZMQ.Socket = context.createSocket(SocketType.REQ)
         val serverHost = System.getenv().getOrDefault("ZMQ_SERVER_HOST", "localhost")
+        val socksProxy = System.getenv()["ZMQ_SOCKS_PROXY"]
+        if (socksProxy != null) {
+            socket.socksProxy = socksProxy
+        }
         socket.connect("tcp://${serverHost}:5555")
         for (requestNbr in 0..9) {
             val request = "Hello message with nr: $requestNbr"
